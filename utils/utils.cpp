@@ -66,7 +66,32 @@ double ** applyKernel_mul(double ** image, double** kernel,int image_size,int ke
     return output;
 }
 
-double ** sobel_kernel_3(){
+double ** y_sobel_kernel_3(){
+    double ** output;
+    int i,j;
+
+    for(i=0;i<3;i++) output = new double*[3];
+    //can be parallelized
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            output[i][j] = 0;
+        }
+    }
+
+    output[0][0] = -1;
+    output[0][1] = 0;
+    output[0][2] = 1;
+    output[1][0] = -2;
+    output[1][1] = 0;
+    output[1][2] = 2;
+    output[2][0] = -1;
+    output[2][1] = 0;
+    output[2][2] = 1;
+
+    return output;
+}
+
+double ** x_sobel_kernel_3(){
     double ** output;
     int i,j;
 

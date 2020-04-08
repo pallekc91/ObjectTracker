@@ -4,22 +4,54 @@
 #include <math.h>
 
 
+void initialise_matrix(double ** output,int image_size){
+    for(int i=0;i<image_size;i++) output = new double*[image_size];
+    //can be parallelized
+        for(int i=0;i<image_size;i++){
+            for(int j=0;j<image_size;j++){
+            output[i][j] = 0;
+            }
+        }
+}
+
+double ** get_angle_matrix(double ** x_output, double ** y_output,int image_size){
+    double ** output;
+    initialise_matrix(output,image_size);
+     for(int i=0;i<image_size;i++){
+        for(int j=0;j<image_size;j++){
+            output[i][j] = atan(x_output[i][j]/y_output[i][j]);
+        }
+    }
+    return output;
+}
+
+double ** get_intensity_matrix(double ** x_output, double ** y_output,int image_size){
+    double ** output;
+    double max = 0;
+    initialise_matrix(output,image_size);
+     for(int i=0;i<image_size;i++){
+        for(int j=0;j<image_size;j++){
+            double value = sqrt(pow(x_output[i][j],2) + pow(y_output[i][j],2));
+            if(max < value){
+                max = value;
+            }
+            output[i][j] = value;
+        }
+    }
+    return output;
+}
+
+
 //i,j += product(image,kernel)
-double ** applyKernel_add(double ** image, double** kernel,int image_size,int kernel_size){
+double ** apply_kernel_add(double ** image, double** kernel,int image_size,int kernel_size){
     if(image == NULL || kernel == NULL){
         //improve logging, maybe use spdlog
-        std::cout << "applyKernel has received NULL for either image or kernel" << std::endl; 
+        std::cout << "apply_kernel_add has received NULL for either image or kernel" << std::endl; 
         return NULL;
     }
 
     double ** output;
-    for(int i=0;i<image_size;i++) output = new double*[image_size];
-    //can be parallelized
-    for(int i=0;i<image_size;i++){
-        for(int j=0;j<image_size;j++){
-            output[i][j] = 0;
-        }
-    }
+    initialise_matrix(output,image_size);
 
     //can be parallelized
     for(int i=0;i<image_size;i++){
@@ -33,21 +65,15 @@ double ** applyKernel_add(double ** image, double** kernel,int image_size,int ke
 
 //has to be a square kernel with odd size
 //i,j = sum(product(image,kernel))
-double ** applyKernel_mul(double ** image, double** kernel,int image_size,int kernel_size){
+double ** apply_kernel_mul(double ** image, double** kernel,int image_size,int kernel_size){
     if(image == NULL || kernel == NULL){
         //improve logging, maybe use spdlog
-        std::cout << "applyKernel has received NULL for either image or kernel" << std::endl; 
+        std::cout << "apply_kernel_mul has received NULL for either image or kernel" << std::endl; 
         return NULL;
     }
 
     double ** output;
-    for(int i=0;i<image_size;i++) output = new double*[image_size];
-    //can be parallelized
-    for(int i=0;i<image_size;i++){
-        for(int j=0;j<image_size;j++){
-            output[i][j] = 0;
-        }
-    }
+    initialise_matrix(output,image_size);
 
     double sum = 0;
     int mid = kernel_size/2;
@@ -70,13 +96,7 @@ double ** y_sobel_kernel_3(){
     double ** output;
     int i,j;
 
-    for(i=0;i<3;i++) output = new double*[3];
-    //can be parallelized
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            output[i][j] = 0;
-        }
-    }
+    initialise_matrix(output,3);
 
     output[0][0] = -1;
     output[0][1] = 0;
@@ -95,13 +115,7 @@ double ** x_sobel_kernel_3(){
     double ** output;
     int i,j;
 
-    for(i=0;i<3;i++) output = new double*[3];
-    //can be parallelized
-    for(i=0;i<3;i++){
-        for(j=0;j<3;j++){
-            output[i][j] = 0;
-        }
-    }
+    initialise_matrix(output,3);
 
     output[0][0] = -1;
     output[0][1] = -2;
@@ -121,13 +135,7 @@ double** gaussian_kernel(int size, double sigma)
     double ** output;
     int i,j;
 
-    for(i=0;i<size;i++) output = new double*[size];
-    //can be parallelized
-    for(i=0;i<size;i++){
-        for(j=0;j<size;j++){
-            output[i][j] = 0;
-        }
-    }
+    initialise_matrix(output,size);
     double sum=0.0;
 
     //can be parallelized, although not necessary though

@@ -19,7 +19,8 @@ char* window_name = "Edge Map";
 void CannyThreshold(int, void*)
 {
     blur( src_gray, gauss_blurred, Size(3,3) ); //adding gaussian blur
-    Canny( gauss_blurred, gauss_blurred, low_threshold, 3 * low_threshold, kernel_size );/ /running canny
+    //running canny
+    Canny( gauss_blurred, gauss_blurred, low_threshold, 3 * low_threshold, kernel_size );
     dst = Scalar::all(0); //initialising the dst to store the output
     src.copyTo( dst, gauss_blurred); //copying the output to dst
     imshow( window_name, dst ); //displaying the image
@@ -30,8 +31,9 @@ void CannyThreshold(int, void*)
 int main(){
 
     //following code to read the image, please change the input file image location.
-    char * imgae_locaton = "/Users/pallekc/Downloads/pallekc.jpg";
-    src = imread( samples::findFile(imgae_locaton), IMREAD_COLOR );
+    // char * imgae_locaton = "/Users/pallekc/Downloads/pallekc.jpg";
+    char * imgae_location = "/home/shubham/Pictures/me.jpeg";
+    src = imread( samples::findFile(imgae_location), IMREAD_COLOR );
     if(src.empty())
     {
         std::cout << "Cound not find/open image" << std::endl;

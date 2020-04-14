@@ -13,6 +13,7 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
 1. Download source for opencv-4.3.0 from the [download page](https://opencv.org/releases/)
 2. Run the following commands in the terminal
 
+```
     ## build and install openCV
     $ cd ~/opencv
     $ mkdir build
@@ -33,15 +34,21 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
     # -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
     
     
-    
     ## to load the installed shared object libraries
     $ sudo ldconfig -v
 
+```
+
 3. Run your code as
 
+```
     $ cd edge_open_cv
     $ g++ -o main main.cpp `pkg-config --cflags --libs opencv4`
     $ ./main
+
+```
+
+
     
 
 
@@ -49,8 +56,9 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
 ## Other references
 
 Please follow the below link,
-for mac: https://medium.com/@jaskaranvirdi/setting-up-opencv-and-c-development-environment-in-xcode-b6027728003
-for ubuntu: http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/
-for windows: https://www.deciphertechnic.com/install-opencv-with-visual-studio/ 	[Needs to be tested]
+
+1. for mac: https://medium.com/@jaskaranvirdi/setting-up-opencv-and-c-development-environment-in-xcode-b6027728003
+2. for ubuntu: http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/
+3. for windows: https://www.deciphertechnic.com/install-opencv-with-visual-studio/ 	[Needs to be tested]
 
  

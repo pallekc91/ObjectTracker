@@ -19,7 +19,7 @@ char* window_name = "Edge Map";
 void CannyThreshold(int, void*)
 {
     blur( src_gray, gauss_blurred, Size(3,3) ); //adding gaussian blur
-    Canny( gauss_blurred, gauss_blurred, low_threshold, 3 * low_threshold, kernel_size );/ /running canny
+    Canny( gauss_blurred, gauss_blurred, low_threshold, 3 * low_threshold, kernel_size );//running canny
     dst = Scalar::all(0); //initialising the dst to store the output
     src.copyTo( dst, gauss_blurred); //copying the output to dst
     imshow( window_name, dst ); //displaying the image
@@ -42,7 +42,7 @@ int main(){
     cvtColor(src, src_gray, COLOR_BGR2GRAY); //convering colour image to grayscale
 
     namedWindow( window_name, WINDOW_AUTOSIZE );    //creating a window to display result
-    
+
     //running the "CannyThreshold" function and displaying the result in the window we just created with a low_threshold to max_lowthreshold limits
     createTrackbar( "Min Threshold:", window_name, &low_threshold, max_lowThreshold, CannyThreshold ); 
     CannyThreshold(0, 0);

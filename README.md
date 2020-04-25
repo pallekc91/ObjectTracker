@@ -42,7 +42,6 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
 3. Run your code as
 
 ```
-    $ cd edge_open_cv
     $ g++ -o main main.cpp `pkg-config --cflags --libs opencv4`
     $ ./main
 
@@ -50,7 +49,9 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
 
 
     
-
+## Analysis
+1. The serial code by default uses 1/8 available thread on Ubuntu Linux
+2. Canny out_Video does not run on Ubuntu?
 
 
 ## Other references

@@ -10,7 +10,7 @@ RNG rng(12345);
 int main(){
 
     //open the video file
-    char* video_location = "/Users/pallekc/EC526/paralg_test.mp4";
+    char* video_location = "./video0.mp4";
     VideoCapture cap(video_location);
 
     //get the first frame a resize it

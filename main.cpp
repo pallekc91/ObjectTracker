@@ -5,7 +5,6 @@
 #include <iostream>
 
 using namespace cv;
-RNG rng(12345);
 
 int main(){
 
@@ -21,8 +20,8 @@ int main(){
     //take the input from the user of the object that he wants to track
     bool fromCenter = false;
     Rect2d main_box = selectROI(frame,fromCenter);
-    cout << "x=" << main_box.x << " ,y=" << main_box.y << endl;
-    cout << "height=" << main_box.height << " ,width=" << main_box.width << endl;
+    // cout << "x=" << main_box.x << " ,y=" << main_box.y << endl;
+    // cout << "height=" << main_box.height << " ,width=" << main_box.width << endl;
 
     //run canny on frame 1 and collect the target_output for the next frame
     Mat canny_out = canny(frame,150,200,3);
@@ -43,9 +42,9 @@ int main(){
         Rect2d pos = lowest_loss(canny_out,target_canny);
 
         //display the frame with a bounding box on the identified position
-        Scalar color = Scalar( rng.uniform(0, 256), rng.uniform(0,256), rng.uniform(0,256) );
-        rectangle( frame, pos.tl(), pos.br(), color, 10 );
+        rectangle( frame, pos.tl(), pos.br(), Scalar(0,0,0), 10 );
         imshow( "frame", frame );
+        waitKey(1);
 
         //update the target_optput for the next frame
         target_canny = canny_out(pos);

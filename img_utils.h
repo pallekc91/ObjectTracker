@@ -21,7 +21,9 @@ Rect2d lowest_loss(Mat ori, Mat target)
 {
    
     Rect2d  res;
-    double min_loss = 99999999999999;
+    double min_loss = numeric_limits<double>::infinity();
+    Mat loss;
+    #pragma acc parallel loop
     for(int i=0;i<ori.cols-target.cols;i++){
         for(int j=0;j<ori.rows-target.rows;j++){
             Rect2d inner_mat_rect(i,j,target.cols,target.rows);

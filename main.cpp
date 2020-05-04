@@ -4,21 +4,36 @@
 
 #include <chrono>
 #include <iostream>
+#include <string>
 
 using namespace cv;
 
-int main(){
+int main(int argc, char **argv){
+
+    if(argc != 4){
+        std::cout << "Improper command line arguments." << std::endl;
+        std::cout << "./main <location_to_input_video> <out_file_location> <min_threshold_for_canny>" << std::endl;
+        return 1;
+    }
 
     //open the video file
-    char* video_location = "./video0.mp4";
+    char* video_location = argv[1];
     VideoCapture cap(video_location);
 
     //emitting the outfile 
-    char* out_file = "./tracking_out.mp4";
+    char* out_file = argv[2];
+
+    int upper_threshold = 200;
+    int lower_threshold = std::stoi (argv[3],nullptr);
+    if(lower_threshold > 199){
+        std::cout << "improper threshold value" << std::endl;
+        std::cout << "please enter value less than 200" << std::endl;
+        return 1;
+    }
 
     //parameters for the outfile and resizing the input
-    int frame_height = 512;
-    int frame_width = 512;
+    int frame_height = 1024;
+    int frame_width = 1024;
     Size frame_size(frame_width, frame_height);
     int frames_per_second = 30;
 
@@ -41,11 +56,11 @@ int main(){
     //take the input from the user of the object that he wants to track
     bool fromCenter = false;
     Rect2d main_box = selectROI(frame,fromCenter);
-    // cout << "x=" << main_box.x << " ,y=" << main_box.y << endl;
-    // cout << "height=" << main_box.height << " ,width=" << main_box.width << endl;
+    cout << "x=" << main_box.x << " ,y=" << main_box.y << endl;
+    cout << "height=" << main_box.height << " ,width=" << main_box.width << endl;
 
     //run canny on frame 1 and collect the target_output for the next frame
-    Mat canny_out = canny(frame,150,200,3);
+    Mat canny_out = canny(frame,lower_threshold,upper_threshold,3);
     Mat target_canny = canny_out(main_box);
 
     //variable to count the frames, initialised to 1 cause we start processing from frame 2
@@ -60,7 +75,7 @@ int main(){
         resize(frame, frame, Size(frame_height, frame_width), 0, 0, INTER_CUBIC);
 
         //run canny on the current frame
-        canny_out = canny(frame,150,200,3);
+        canny_out = canny(frame,lower_threshold,upper_threshold,3);
 
         //find the position of the target_output in the current frame
         Rect2d pos = lowest_loss(canny_out,target_canny);
@@ -85,6 +100,6 @@ int main(){
     //computing the difference in seconds
     std::chrono::duration<double> difference_in_time = end_time - begin_time;
     double difference_in_seconds = difference_in_time.count();
-    std::cout << "Time taken to process " << frame_count << " frame  is " << difference_in_seconds << " seconds" << std::endl;
+    std::cout << "Time taken to process " << frame_count << " frame(s)  is " << difference_in_seconds << " seconds" << std::endl;
 }
 

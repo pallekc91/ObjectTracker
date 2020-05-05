@@ -39,11 +39,19 @@ Relevant steps from the instructions [here](https://docs.opencv.org/master/d7/d9
 
 ```
 
-3. Run your code as
+3. Run your serial code as
 
 ```
     $ g++ -o main main.cpp `pkg-config --cflags --libs opencv4`
     $ ./main
+
+```
+
+4. Run your mpi code as
+
+```
+    $ mpic++ -std=c++11 `pkg-config --cflags --libs opencv4` -o mpi_main mpi_main.cpp
+    $ ./mpi_main
 
 ```
 
